@@ -2,7 +2,8 @@
   "name": "C# Example",
   "build": {
     "dockerfile": "../Dockerfile",
-    "context": ".."
+    "context": "..",
+    "cacheFrom": "ghcr.io/otisdaley-vg/hackathon-csharp:latest"
   },
   "customizations": {
     "vscode": {

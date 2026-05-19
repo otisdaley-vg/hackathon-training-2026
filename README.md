@@ -13,6 +13,17 @@ Languages available under `environments/`:
 
 Every image also includes Node 20, `git`, and `@anthropic-ai/claude-code` on the global `PATH`.
 
+Prebuilt images are published to GHCR on every push to `main`:
+
+- `ghcr.io/otisdaley-vg/hackathon-python:latest`
+- `ghcr.io/otisdaley-vg/hackathon-typescript:latest`
+- `ghcr.io/otisdaley-vg/hackathon-php:latest`
+- `ghcr.io/otisdaley-vg/hackathon-csharp:latest`
+
+You can either pull these directly (see Option 3) or let your tooling build locally from each environment's `Dockerfile` — the devcontainers use the published image as a layer cache, so the first build is fast once CI has run.
+
+> **First-time setup:** GHCR packages are private by default. After CI runs for the first time, open each package at `https://github.com/users/otisdaley-vg/packages/container/hackathon-<lang>/settings` and set its visibility to **Public** so attendees can `docker pull` without authenticating. Repeat for all four environments.
+
 ## Prerequisites
 
 - [Docker](https://www.docker.com/) (Docker Desktop on macOS/Windows, Docker Engine on Linux)
@@ -46,31 +57,29 @@ Inside the shell, run `claude`. Swap `python` for `typescript`, `php`, or `cshar
 
 ## Option 3 — Docker CLI (no VS Code)
 
-Pick the environment you want and build its image. Run these commands from the repo root.
+### 3a. Pull the prebuilt image (fastest)
 
 ```bash
-# Python
-docker build -t hackathon-python environments/python
+docker pull ghcr.io/otisdaley-vg/hackathon-python:latest
 
-# TypeScript
-docker build -t hackathon-typescript environments/typescript
-
-# PHP
-docker build -t hackathon-php environments/php
-
-# C#
-docker build -t hackathon-csharp environments/csharp
+docker run -it --rm \
+  -v "$PWD/environments/python":/workspace \
+  ghcr.io/otisdaley-vg/hackathon-python:latest
 ```
 
-Then start an interactive container with your code bind-mounted, so edits on your host show up inside:
+Swap `python` for `typescript`, `php`, or `csharp`.
+
+### 3b. Build the image locally
 
 ```bash
+docker build -t hackathon-python environments/python
+
 docker run -it --rm \
   -v "$PWD/environments/python":/workspace \
   hackathon-python
 ```
 
-You'll land in a `bash` shell at `/workspace` with `claude` available. Swap the image and bind-mount path for the language you built.
+Either way you'll land in a `bash` shell at `/workspace` with `claude` available.
 
 > **Note:** the bind mount hides the dependencies installed at image build time. The first time you mount, re-run the install command for that language inside the container: `npm install`, `composer install`, `dotnet restore`, or `pip install -r requirements.txt`. Subsequent runs reuse what landed on your host.
 

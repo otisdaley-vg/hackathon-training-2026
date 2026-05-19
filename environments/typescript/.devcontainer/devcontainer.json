@@ -2,7 +2,8 @@
   "name": "TypeScript Example",
   "build": {
     "dockerfile": "../Dockerfile",
-    "context": ".."
+    "context": "..",
+    "cacheFrom": "ghcr.io/otisdaley-vg/hackathon-typescript:latest"
   },
   "customizations": {
     "vscode": {
