@@ -1,13 +1,8 @@
 {
   "name": "Python Example",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "features": {
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
   },
   "customizations": {
     "vscode": {
@@ -17,5 +12,5 @@
       ]
     }
   },
-  "postCreateCommand": "pip install -r requirements.txt && npm install -g @anthropic-ai/claude-code"
+  "postCreateCommand": "pip install -r requirements.txt"
 }

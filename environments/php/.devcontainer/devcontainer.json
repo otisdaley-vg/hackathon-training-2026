@@ -1,14 +1,8 @@
 {
   "name": "PHP Example",
-  "image": "mcr.microsoft.com/devcontainers/php:8.2",
-  "features": {
-    "ghcr.io/devcontainers/features/php:1": {
-      "version": "8.2",
-      "installComposer": "true"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
   },
   "customizations": {
     "vscode": {
@@ -17,5 +11,5 @@
       ]
     }
   },
-  "postCreateCommand": "composer install --no-interaction && npm install -g @anthropic-ai/claude-code"
+  "postCreateCommand": "composer install --no-interaction"
 }

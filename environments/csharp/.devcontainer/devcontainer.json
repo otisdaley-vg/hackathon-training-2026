@@ -1,13 +1,8 @@
 {
   "name": "C# Example",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
-  "features": {
-    "ghcr.io/devcontainers/features/dotnet:1": {
-      "version": "8.0"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
   },
   "customizations": {
     "vscode": {
@@ -16,5 +11,5 @@
       ]
     }
   },
-  "postCreateCommand": "dotnet restore && npm install -g @anthropic-ai/claude-code"
+  "postCreateCommand": "dotnet restore"
 }
