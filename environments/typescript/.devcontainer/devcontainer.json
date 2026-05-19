@@ -1,10 +1,9 @@
 {
-  "name": "TypeScript OpenAI Example",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
+  "name": "TypeScript Example",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "cacheFrom": "ghcr.io/otisdaley-vg/hackathon-typescript:latest"
   },
   "customizations": {
     "vscode": {
@@ -14,8 +13,5 @@
       ]
     }
   },
-  "postCreateCommand": "npm install",
-  "remoteEnv": {
-    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}"
-  }
+  "postCreateCommand": "npm install"
 }

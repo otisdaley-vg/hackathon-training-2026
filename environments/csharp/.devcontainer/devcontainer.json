@@ -1,10 +1,9 @@
 {
-  "name": "C# OpenAI Example",
-  "image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
-  "features": {
-    "ghcr.io/devcontainers/features/dotnet:1": {
-      "version": "8.0"
-    }
+  "name": "C# Example",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "cacheFrom": "ghcr.io/otisdaley-vg/hackathon-csharp:latest"
   },
   "customizations": {
     "vscode": {
@@ -13,8 +12,5 @@
       ]
     }
   },
-  "postCreateCommand": "dotnet restore",
-  "remoteEnv": {
-    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}"
-  }
+  "postCreateCommand": "dotnet restore"
 }

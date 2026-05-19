@@ -1,13 +1,10 @@
 {
-  "name": "openai-typescript-example",
+  "name": "typescript-example",
   "version": "1.0.0",
-  "description": "Simple OpenAI API example in TypeScript",
+  "description": "Simple TypeScript example",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts"
-  },
-  "dependencies": {
-    "openai": "^4.20.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

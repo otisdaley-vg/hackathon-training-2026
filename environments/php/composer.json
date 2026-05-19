@@ -1,6 +1,6 @@
 {
-    "name": "example/openai-example",
-    "description": "Simple OpenAI API example in PHP",
+    "name": "example/php-example",
+    "description": "Simple PHP example",
     "require": {
         "php": ">=8.1",
         "symfony/http-client": "^7.3",
