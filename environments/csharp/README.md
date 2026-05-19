@@ -1,6 +1,6 @@
 # C# Example
 
-Simple example of calling the OpenAI API from C#.
+Simple example of C#.
 
 ## Prerequisites
 

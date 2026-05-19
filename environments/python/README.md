@@ -1,4 +1,4 @@
-# Python OpenAI API Example
+# Python Example
 
 Simple example of Python.
 

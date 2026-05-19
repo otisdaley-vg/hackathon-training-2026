@@ -1,4 +1,4 @@
-# TypeScript OpenAI API Example
+# TypeScript Example
 
 Simple example of TypeScript.
 

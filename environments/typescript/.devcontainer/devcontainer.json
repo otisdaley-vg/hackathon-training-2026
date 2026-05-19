@@ -1,5 +1,5 @@
 {
-  "name": "TypeScript OpenAI Example",
+  "name": "TypeScript Example",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -14,8 +14,5 @@
       ]
     }
   },
-  "postCreateCommand": "npm install",
-  "remoteEnv": {
-    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}"
-  }
+  "postCreateCommand": "npm install && npm install -g @anthropic-ai/claude-code"
 }
