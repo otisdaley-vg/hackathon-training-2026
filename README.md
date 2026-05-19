@@ -39,19 +39,19 @@ Languages available under `environments/`:
 
 | Folder | Toolchain |
 | --- | --- |
+| `csharp` | .NET 9 SDK |
 | `python` | Python 3.11 |
 | `typescript` | Node 20 + TypeScript 5 |
 | `php` | PHP 8.2 + Composer |
-| `csharp` | .NET 9 SDK |
 
 Every image also includes Node 20, `git`, and `@anthropic-ai/claude-code` on the global `PATH`.
 
 Prebuilt images are published to GHCR on every push to `main`:
 
+- `ghcr.io/otisdaley-vg/hackathon-csharp:latest`
 - `ghcr.io/otisdaley-vg/hackathon-python:latest`
 - `ghcr.io/otisdaley-vg/hackathon-typescript:latest`
 - `ghcr.io/otisdaley-vg/hackathon-php:latest`
-- `ghcr.io/otisdaley-vg/hackathon-csharp:latest`
 
 You can either pull these directly (see Option 3) or let your tooling build locally from each environment's `Dockerfile` — the devcontainers use the published image as a layer cache, so the first build is fast once CI has run.
 
@@ -65,7 +65,7 @@ You can either pull these directly (see Option 3) or let your tooling build loca
 ## Option 1 — VS Code Dev Containers
 
 1. Clone this repo.
-2. Open the environment you want: `code environments/python` (or `typescript` / `php` / `csharp`).
+2. Open the environment you want: `code environments/csharp` (or `python` / `typescript` / `php`).
 3. When prompted, click **Reopen in Container** — or run the **Dev Containers: Reopen in Container** command from the palette.
 4. First build takes a few minutes (Docker pulls the base image, installs Claude Code, etc.); subsequent opens are instant.
 5. Open the integrated terminal and run `claude` to start Claude Code.
@@ -80,51 +80,82 @@ Same workflow as Option 1, driven from the terminal. Requires Node.
 npm install -g @devcontainers/cli
 
 # Build the image and run postCreateCommand
-devcontainer up --workspace-folder environments/python
+devcontainer up --workspace-folder environments/csharp
 
 # Drop into a shell inside the container
-devcontainer exec --workspace-folder environments/python bash
+devcontainer exec --workspace-folder environments/csharp bash
 ```
 
-Inside the shell, run `claude`. Swap `python` for `typescript`, `php`, or `csharp`.
+Inside the shell, run `claude`. Swap `csharp` for `python`, `typescript`, or `php`.
 
 ## Option 3 — Docker CLI (no VS Code)
 
 ### 3a. Pull the prebuilt image (fastest)
 
 ```bash
-docker pull ghcr.io/otisdaley-vg/hackathon-python:latest
+# bash / zsh
+docker pull ghcr.io/otisdaley-vg/hackathon-csharp:latest
 
 docker run -it --rm \
-  -v "$PWD/environments/python":/workspace \
-  ghcr.io/otisdaley-vg/hackathon-python:latest
+  -v "$PWD/environments/csharp":/workspace \
+  ghcr.io/otisdaley-vg/hackathon-csharp:latest
 ```
 
-Swap `python` for `typescript`, `php`, or `csharp`.
+```powershell
+# PowerShell (Windows / pwsh)
+docker pull ghcr.io/otisdaley-vg/hackathon-csharp:latest
+
+docker run -it --rm `
+  -v "${PWD}/environments/csharp:/workspace" `
+  ghcr.io/otisdaley-vg/hackathon-csharp:latest
+```
+
+Swap `csharp` for `python`, `typescript`, or `php`.
 
 ### 3b. Build the image locally
 
 ```bash
-docker build -t hackathon-python environments/python
+# bash / zsh
+docker build -t hackathon-csharp environments/csharp
 
 docker run -it --rm \
-  -v "$PWD/environments/python":/workspace \
-  hackathon-python
+  -v "$PWD/environments/csharp":/workspace \
+  hackathon-csharp
+```
+
+```powershell
+# PowerShell (Windows / pwsh)
+docker build -t hackathon-csharp environments/csharp
+
+docker run -it --rm `
+  -v "${PWD}/environments/csharp:/workspace" `
+  hackathon-csharp
 ```
 
 Either way you'll land in a `bash` shell at `/workspace` with `claude` available.
 
-> **Note:** the bind mount hides the dependencies installed at image build time. The first time you mount, re-run the install command for that language inside the container: `npm install`, `composer install`, `dotnet restore`, or `pip install -r requirements.txt`. Subsequent runs reuse what landed on your host.
+> **Note:** the bind mount hides the dependencies installed at image build time. The first time you mount, re-run the install command for that language inside the container: `dotnet restore`, `pip install -r requirements.txt`, `npm install`, or `composer install`. Subsequent runs reuse what landed on your host.
 
 ## Authenticating Claude Code
 
 The first time you run `claude` in a fresh container it will prompt you to sign in. Follow the on-screen flow. Alternatively, set `ANTHROPIC_API_KEY` before launching the container:
 
 ```bash
+# bash / zsh — set the variable in the parent shell first:
+#   export ANTHROPIC_API_KEY=sk-ant-...
 docker run -it --rm \
   -e ANTHROPIC_API_KEY \
-  -v "$PWD/environments/python":/workspace \
-  hackathon-python
+  -v "$PWD/environments/csharp":/workspace \
+  hackathon-csharp
+```
+
+```powershell
+# PowerShell — set the variable in the parent shell first:
+#   $env:ANTHROPIC_API_KEY = "sk-ant-..."
+docker run -it --rm `
+  -e ANTHROPIC_API_KEY `
+  -v "${PWD}/environments/csharp:/workspace" `
+  hackathon-csharp
 ```
 
 For Dev Containers, add the same `remoteEnv` entry to the relevant `devcontainer.json` if you'd rather not log in interactively.
