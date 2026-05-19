@@ -27,6 +27,8 @@ This has consequences:
 - It has no persistent memory between calls. Anything you want it to "know" must be in the current context.
 - It's stochastic. The same prompt can give different outputs.
 
+> **Like I'm five:** Imagine the world's most obsessive game of *"what word comes next?"* with a kid who's read every book in the library. You say *"Once upon a..."* and they shout *"time!"* — not because they understand stories, but because that's the word that almost always follows. Then they guess the next word, and the next, one at a time, until a whole story spills out. The model isn't *thinking*; it's playing that game very, very fast.
+
 ### Top 5 LLMs (and who builds them)
 
 The frontier shifts every few months — by the time you read this, version numbers will be off. The companies stay roughly the same:
@@ -51,10 +53,14 @@ Tokens are sub-word chunks (~4 chars / ~0.75 words on average in English). They 
 - The **context window** is measured in tokens — the total input + output the model can see at once. Modern frontier models range from 200K to 1M+ tokens.
 - Long contexts degrade quality. "Lost in the middle" is real: information buried halfway through a giant prompt gets ignored more often than information at the start or end.
 
+> **Like I'm five:** A token is a snack-sized piece of a word. *"Dog"* is one snack. *"Antidisestablishmentarianism"* is seven snacks. The model gets paid by the snack, can only fit so many snacks in its lunchbox (**the context window**) at a time, and — weirdly — pays the most attention to the snacks at the *top* and *bottom* of the lunchbox. Stuff in the middle gets glossed over.
+
 ### Sampling parameters
 
 - **Temperature** (0–2): higher = more random / creative, lower = more deterministic. For code, lean low (0–0.3).
 - **Top-p / top-k**: alternate ways to clip the sampling distribution. You rarely need to touch these.
+
+> **Like I'm five:** Imagine a kid choosing crayons. **Low temperature** — they reach for the same red, every time. Predictable. **High temperature** — they bounce around grabbing weird shades, sometimes brilliant, sometimes mud. For code you want the predictable kid. For poetry you want the bouncy one.
 
 ### Capabilities and limits
 

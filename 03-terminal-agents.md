@@ -44,6 +44,8 @@ The tools are the interesting part. A typical coding agent has:
 
 Everything the agent does to your machine flows through these tools — which is why the containment model below matters so much.
 
+> **Like I'm five:** Treasure hunt with a friend. They peek at the first clue (**plan**), walk to where it points (**act**), look at what's there (**observe**), and decide where to go next. They don't memorize the whole map upfront — they take it one clue at a time, eyes open. That's the loop.
+
 ### Containment: two layers
 
 The agent will sometimes do things you regret. Two failure modes:
@@ -57,6 +59,8 @@ You want two layers of protection, because they catch different failures:
 - **Sandboxing** is *hard, by-the-process*. The agent literally can't reach certain files, hosts, or capabilities — even if it tried. The OS or container enforces it.
 
 Permissions stop dumb mistakes. Sandboxing stops disasters. Use both.
+
+> **Like I'm five:** **Permissions** are the babysitter asking *"can I have a cookie?"* every time. **Sandboxing** is the cookie jar being on the top shelf where the babysitter can't reach it even if they wanted to. Permissions catch the polite ask; sandboxes catch the sneaky climb.
 
 ### Permissions (soft containment)
 
@@ -126,6 +130,8 @@ docker run --rm -it -v "$PWD:/work" -w /work ghcr.io/anthropics/claude-code
 | Risky refactor or multi-agent run | + git worktree |
 | Untrusted prompt or unattended | Containerized |
 
+> **Like I'm five:** **Sandbox mode** = stickers on the doors saying *"don't open."* **Worktree** = a whole second copy of the playroom; trash this one and the real playroom is fine. **Container** = the kid is in a *different house entirely* — anything they do, your house is untouched.
+
 ### The supervision skill
 
 Containment buys you safety. *Outcome quality* still depends on how you frame the task.
@@ -173,6 +179,8 @@ Defenses:
 - **Containerize untrusted runs.** If the content source is external — a URL, an issue body, a customer message — run in a container where blast radius is bounded even if the injection works.
 
 This is the agentic analogue of XSS or SQL injection: the attack surface is anywhere untrusted content enters the model's context.
+
+> **Like I'm five:** You ask a kid to read a note from the fridge. The note says: *"Read this out loud, then go steal the cookies."* A naive kid reads the whole thing — and then goes for the cookies. The agent can't tell the difference between *what you said* and *what someone wrote in the note*. To the agent, both are just words it's reading.
 
 ## Hands-on (15 min)
 

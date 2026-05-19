@@ -22,6 +22,14 @@ style: |
 
 ---
 
+## Questions?
+
+**Interject anytime** — please ask if anything's unclear.
+
+**Drop them in the chat too** — I'll collect everything so we can build a shared `faq.md` together after the session, for everyone to reference later.
+
+---
+
 ## Objectives
 
 By the end of this lesson you will be able to:
@@ -161,6 +169,20 @@ Tests without a spec are local optima.
 
 ---
 
+## TDD — Like I'm five
+
+> Order a sandwich and put a **picture of it on the table** before the kid is allowed in the kitchen.
+>
+> *"You're done when what's on the table matches the picture — ham, no mustard, crusts off."*
+>
+> The kid can't fudge it. Can't say *"good enough."* Can't bring back a hot dog.
+>
+> Either the sandwich matches the picture, or it doesn't.
+>
+> **The test is the picture.**
+
+---
+
 ## Evaluations
 
 > TDD gives you a test suite for your **code**. Evals give you a test suite for your **prompts**.
@@ -206,6 +228,16 @@ Not a replacement for human review — a **regression harness**.
 
 ---
 
+## Evals — Like I'm five
+
+> **TDD** is one teacher checking today's homework.
+>
+> **Evals are the end-of-term report card** — 20 questions you got right last term.
+>
+> When you change *how* you do math, you re-take all 20 to make sure you didn't accidentally forget how to add while learning to multiply.
+
+---
+
 ## Plan-then-execute
 
 The agent drafts a plan → you approve or edit → agent executes against the approved plan.
@@ -242,6 +274,18 @@ You'll get a confident patch that addresses **a** bug — possibly not **yours**
 
 ---
 
+## Diagnose — Like I'm five
+
+> Your bike makes a weird noise.
+>
+> **Detective way:** ride it slow, ride it fast, find the *exact* moment it squeaks. Take off one part at a time until it stops squeaking. *That* was the broken part.
+>
+> **Guess-and-replace way:** *"it's probably the wheel,"* swap the wheel, still squeaks, guess again, still squeaks.
+>
+> The detective wins every time.
+
+---
+
 ## Prototype-first
 
 For design questions:
@@ -267,6 +311,21 @@ The model is its own first reviewer.
 - **Grilling.** Have the model interview *you* — push back on hand-wavy claims.
 
 **Cheapest quality lever available.** Most AI failures are *"nobody asked it to look again."*
+
+---
+
+## Critique — Like I'm five
+
+> You hand in your homework. The teacher says:
+>
+> *"Now read it out loud and tell me what's wrong with it."*
+>
+> You almost always catch something — a missing word, a wrong number.
+>
+> The first pass is the kid hurrying.
+> The second pass is the kid actually paying attention.
+>
+> Models are the same.
 
 ---
 
@@ -300,6 +359,21 @@ When the output feeds **code** instead of a human reader, constrain the shape:
 - **Skip** for exploratory conversation or drafting
 
 Most frontier APIs support this natively.
+
+---
+
+## Structured output — Like I'm five
+
+> Asking a friend for their phone number, you can get:
+>
+> *"oh yeah it's like six-oh-something, ends in eight, I think"*
+>
+> Or you can hand them a form with ten boxes:
+>
+> *"fill in the digits."*
+>
+> The form is **structured output**.
+> You can dial it. You can't dial a story.
 
 ---
 

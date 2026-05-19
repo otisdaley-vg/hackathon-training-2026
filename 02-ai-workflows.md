@@ -88,6 +88,8 @@ Why this works well with AI: the test is a verifier the model can't bluff past. 
 
 A spec without tests is a wish. Tests without a spec are local optima. Use both.
 
+> **Like I'm five:** Order a sandwich and put a picture of it on the table *before* the kid is allowed in the kitchen. *"You're done when what's on the table matches the picture — ham, no mustard, crusts off."* The kid can't fudge it, can't say *"good enough,"* can't bring back a hot dog. Either the sandwich matches the picture, or it doesn't. The test is the picture.
+
 ## Evaluations
 
 TDD gives you a test suite for your code. **Evals** give you a test suite for your *prompts*.
@@ -120,6 +122,8 @@ Evals are not a replacement for human review on novel inputs — they're a regre
 
 Use both. TDD covers the code; evals cover the AI. A green test suite and a green eval run together give real confidence.
 
+> **Like I'm five:** TDD is one teacher checking today's homework. **Evals are the end-of-term report card** — 20 questions you got right last term. When you change *how* you do math, you re-take all 20 to make sure you didn't accidentally forget how to add while learning to multiply.
+
 ## Other workflows worth knowing
 
 ### Plan-then-execute
@@ -147,6 +151,8 @@ AI's role: hold the hypothesis with you, generate the minimal repro, write the r
 
 The big anti-pattern: asking the model to *"fix the bug"* without a repro. You'll get a confident patch that addresses *a* bug, possibly not *yours*.
 
+> **Like I'm five:** Your bike makes a weird noise. **Detective way:** ride it slow, ride it fast, find the *exact* moment it squeaks; take off one part at a time until it stops squeaking. *That* was the broken part. **Guess-and-replace way:** *"it's probably the wheel,"* swap the wheel, still squeaks, guess again, still squeaks. The detective wins every time.
+
 ### Prototype-first
 
 For design questions — *"should the state machine look like this or this?"*, *"what should this dashboard feel like?"* — build a throwaway. Ship it nowhere. Use it to extract the *real* requirements before you commit to a spec.
@@ -167,6 +173,8 @@ The model is its own first reviewer. Three useful shapes:
 - **Grilling.** Have the model interview *you* — push back on hand-wavy claims until the plan is concrete. Claude Code's `grill-me` skill packages this.
 
 The cheapest quality lever available. Most AI failures aren't *"the model couldn't do it"* — they're *"nobody asked it to look again."*
+
+> **Like I'm five:** You hand in your homework, and the teacher says *"now read it out loud and tell me what's wrong with it."* You almost always catch something — a missing word, a wrong number. The first pass is the kid hurrying. The second pass is the kid actually paying attention. Models are the same.
 
 ### Vertical-slice breakdown
 
@@ -194,6 +202,8 @@ You can then sort by severity, store in a database, or pipe to another tool — 
 Reach for structured output when output plugs into code rather than a human reader: classification, extraction, multi-step pipelines. Skip it for exploratory conversation or drafting — schema ceremony adds noise with no benefit there.
 
 Most frontier APIs support this natively. Include a JSON schema in the system prompt and instruct the model to return only JSON. Claude and GPT-4o are reliable at it.
+
+> **Like I'm five:** Asking a friend for their phone number, you can get *"oh yeah it's like six-oh-something, ends in eight, I think"* — or you can hand them a form with ten boxes and say *"fill in the digits."* The form is structured output. You can dial it; you can't dial a story.
 
 ### Model and cost selection
 

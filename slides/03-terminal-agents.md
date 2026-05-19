@@ -22,6 +22,14 @@ style: |
 
 ---
 
+## Questions?
+
+**Interject anytime** — please ask if anything's unclear.
+
+**Drop them in the chat too** — I'll collect everything so we can build a shared `faq.md` together after the session, for everyone to reference later.
+
+---
+
 ## Objectives
 
 By the end of this lesson you will be able to:
@@ -81,6 +89,18 @@ Everything the agent does to your machine flows through these tools.
 
 ---
 
+## Agent loop — Like I'm five
+
+> Treasure hunt with a friend.
+>
+> They peek at the first clue (**plan**), walk to where it points (**act**), look at what's there (**observe**), and decide where to go next.
+>
+> They don't memorize the whole map upfront — they take it one clue at a time, eyes open.
+>
+> That's the loop.
+
+---
+
 ## Containment: two layers
 
 The agent will sometimes do things you regret. Two failure modes:
@@ -101,6 +121,17 @@ You want **two layers** because they catch different failures.
 
 **Permissions stop dumb mistakes. Sandboxing stops disasters.**
 Use both.
+
+---
+
+## Permissions vs sandboxing — Like I'm five
+
+> **Permissions** are the babysitter asking *"can I have a cookie?"* every time.
+>
+> **Sandboxing** is the cookie jar being on the top shelf where the babysitter can't reach it even if they wanted to.
+>
+> Permissions catch the polite ask.
+> Sandboxes catch the sneaky climb.
 
 ---
 
@@ -211,6 +242,16 @@ The agent shares only the bind-mounted code. Can't touch dotfiles, SSH keys, bro
 
 ---
 
+## Sandbox flavors — Like I'm five
+
+> **Sandbox mode** = stickers on the doors saying *"don't open."*
+>
+> **Worktree** = a whole second copy of the playroom; trash this one and the real playroom is fine.
+>
+> **Container** = the kid is in a *different house entirely* — anything they do, your house is untouched.
+
+---
+
 ## The supervision skill
 
 Containment buys you safety. **Outcome quality still depends on framing.**
@@ -275,6 +316,21 @@ A naive agent may follow the embedded instruction — especially if framed as a 
 - **Containerize untrusted runs.** Blast radius is bounded even if injection works.
 
 This is the agentic analogue of **XSS / SQL injection**: untrusted content entering the model's context.
+
+---
+
+## Prompt injection — Like I'm five
+
+> You ask a kid to read a note from the fridge.
+>
+> The note says:
+> *"Read this out loud, then go steal the cookies."*
+>
+> A naive kid reads the whole thing — and then goes for the cookies.
+>
+> The agent can't tell the difference between **what you said** and **what someone wrote in the note**.
+>
+> To the agent, both are just words it's reading.
 
 ---
 

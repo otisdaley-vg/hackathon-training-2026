@@ -22,6 +22,8 @@ Before MCP, every agent vendor wrote their own integrations and every tool vendo
 
 MCP (Model Context Protocol, open spec from Anthropic, late 2024) standardizes this. One protocol; any compliant agent can talk to any compliant server. **N + M**.
 
+> **Like I'm five:** Before USB-C, every gadget needed its own cable — phone cable, camera cable, weird-printer cable. A drawer full of them and nothing fit anything. **MCP is the USB-C of agent tools** — one plug shape, everything fits.
+
 ### The mental model
 
 An **MCP server** is a small process — usually a local subprocess, sometimes a remote service — that exposes capabilities to an agent over a JSON-RPC connection. The agent is the **client**.
@@ -33,6 +35,8 @@ A server can expose three kinds of things:
 - **Prompts** — reusable prompt templates the server offers. Less common in day-to-day use; useful for vendor-curated workflows ("triage this ticket").
 
 You won't always use all three. Most servers in the wild are mostly tools.
+
+> **Like I'm five:** A kitchen drawer. **Tools** are gadgets that *do* things — the can-opener, the whisk. **Resources** are things you *read* — the cookbook, the label on the jar. **Prompts** are post-it notes saying *"how Grandma makes the stew."* You'll mostly grab tools; the others are there if you need them.
 
 ### Transport
 
@@ -57,32 +61,68 @@ Same blast-radius thinking as Lesson 3, but bigger:
 - A malicious or buggy server can confuse the agent into doing the wrong thing — "tool injection" is a real attack surface. Treat tool output as untrusted input.
 - For shared/remote servers, audit the auth model. Who can call this? What can they do?
 
+> **Like I'm five:** Letting a new toy into your house. The toy might be lovely. The toy might also be a tiny robot with sharp edges that walks into the kitchen and unplugs the fridge. Once you plug it in, it can do things — so check what it does *before* you plug it in, not after.
+
 ## Hands-on (15 min)
 
-We'll install a couple of MCP servers in Claude Code and use them.
+We'll wire Claude Code up to a real database via an MCP server and let it write the SQL for us. Exercise adapted from [ai-training.re-cinq.com/mcp-db](https://ai-training.re-cinq.com/mcp-db/).
 
-**Exercise 1 — Install a filesystem server.** From your Claude Code config (`~/.claude/settings.json` or via `/config`), add an MCP server entry. A typical config block looks like:
+**Exercise 1 — Stand up the Netflix database.** Pull and run the pre-baked container (pick one):
 
-```json
-{
-  "mcpServers": {
-    "filesystem": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/you/scratch"]
-    }
-  }
-}
+```bash
+# MariaDB / MySQL
+docker pull ghcr.io/re-cinq/ai-training-netflixdb-mariadb:latest
+docker run -d --name netflixdb -p 3306:3306 ghcr.io/re-cinq/ai-training-netflixdb-mariadb
+
+# OR Postgres
+docker pull ghcr.io/re-cinq/ai-training-netflixdb-postgres:latest
+docker run -d --name netflixdb -p 5432:5432 ghcr.io/re-cinq/ai-training-netflixdb-postgres
 ```
 
-Restart Claude Code. Ask: *"List the files in my scratch directory and tell me which is the largest."* Notice that it uses the new tools instead of `bash`.
+Confirm with `docker ps`. You should see 4 tables (`movie`, `tv_show`, `season`, `view_summary`) once connected — ~37K rows total.
 
-**Exercise 2 — Pick one server from the registry.** Browse [modelcontextprotocol.io](https://modelcontextprotocol.io) or the community awesome-mcp lists. Install one that maps to a real tool you use (GitHub, Linear, Slack, Postgres, Sentry…). Configure it with a read-only token first.
+**Exercise 2 — Pick where the agent runs.** Two options, same outcome:
 
-Ask the agent something only that integration could answer: *"What are my open GitHub PRs, and which has the most review comments?"* Confirm it uses MCP tools, not screen-scraping or guessing.
+- **Agent on host** — your existing Claude Code talks to the DB on `localhost`. Needs Node/npm locally.
+- **Claude Code inside the DB container** — `docker exec -it netflixdb bash`, run Claude Code there. More isolated, no host install needed.
 
-**Exercise 3 — Audit a tool.** Pick one tool exposed by the server you installed. Ask the agent: *"Show me the schema and description of the `<tool_name>` tool."* Read it. Could a malicious server description trick the agent into doing something unsafe? This is the attack surface.
+**Exercise 3 — Add the DBHub MCP server.** From the CLI:
 
-**Exercise 4 (stretch) — Sketch your own server.** Pick something internal at your team that the agent currently can't see — a deployment dashboard, an internal directory, a custom ticketing system. Outline (in a paragraph) the 3–5 tools you'd expose. What are the names? Descriptions? Inputs? Which would be read-only vs write?
+```bash
+# MariaDB
+claude mcp add netflix-mysql npx @bytebase/dbhub -- --dsn mysql://root:mariadb@localhost:3306/netflixdb
+
+# Postgres
+claude mcp add netflix-psql npx @bytebase/dbhub -- --dsn postgres://postgres:postgres@localhost:5432/netflixdb
+```
+
+Verify with `claude mcp list`. Restart Claude Code if needed.
+
+**Exercise 4 — Warm-up queries.** Ask the agent natural-language questions and watch it pick the MCP tools instead of guessing:
+
+- *"Which TV show has the highest viewing minutes per runtime minute?"*
+- *"How does Stranger Things compare across seasons vs Squid Game?"*
+- *"Pick my favourite show — how did it actually perform?"*
+
+**Exercise 5 — The scorecard.** Paste this prompt verbatim:
+
+> Create a "Content Performance Scorecard" ranking all movies and TV shows using a composite score (0–100) built from five weighted metrics: Efficiency (25%, viewing hours per runtime minute), Longevity (20%, weeks in top 10), Momentum (20%, recent vs overall average), Consistency (15%, week-to-week stability), Peak Performance (20%, best ranking achieved). Classify each as Dominant Force, Rising Star, Flash Hit, Steady Performer, or Other. Show the top 25.
+
+Read the SQL it writes before you trust the table. Does it match your intent?
+
+**Exercise 6 — Reproducibility check.** Once it answers, clear the chat and submit the *exact same* prompt again. Compare:
+
+- Did the SQL change?
+- Did the numbers change?
+- Did the classifications change?
+
+This is the part nobody warns you about. The agent is non-deterministic; even with the same DB and the same prompt, you can get different answers. What would you do differently before putting this in front of a stakeholder?
+
+**Reflection.** Park these in your notes:
+
+- How would you make this safe to run against a production DB? (Read-only user? Query allow-list? Approval step?)
+- Does the scorecard *looking* impressive make you trust it more than you should?
+- What's one place at your team where "agent + DB over MCP" would actually save real time?
 
 ## Recap
 

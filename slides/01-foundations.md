@@ -21,6 +21,14 @@ style: |
 
 ---
 
+## Questions?
+
+**Interject anytime** — please ask if anything's unclear.
+
+**Drop them in the chat too** — I'll collect everything so we can build a shared `faq.md` together after the session, for everyone to reference later.
+
+---
+
 ## Objectives
 
 By the end of this lesson you will be able to:
@@ -53,6 +61,19 @@ Everything else — *"reasoning"*, *"tool use"*, *"memory"* — is built on top 
 
 ---
 
+## What an LLM is — Like I'm five
+
+> The world's most obsessive game of *"what word comes next?"* with a kid who's read every book in the library.
+>
+> You say *"Once upon a..."* — they shout *"time!"*
+> Not because they understand stories. Because that's the word that almost always follows.
+>
+> Then they guess the next word. And the next.
+>
+> The model isn't *thinking* — it's playing that game very, very fast.
+
+---
+
 ## Top 5 LLMs (and who builds them)
 
 | Model family | Company | Notes |
@@ -77,12 +98,43 @@ Tokens are sub-word chunks (~4 chars / ~0.75 words on average in English).
 
 ---
 
+## Tokens — Like I'm five
+
+> A token is a **snack-sized piece of a word**.
+>
+> *"Dog"* — one snack.
+> *"Antidisestablishmentarianism"* — seven snacks.
+>
+> The model:
+> - Gets paid by the snack
+> - Can only fit so many in its lunchbox at a time (**the context window**)
+> - Pays the most attention to the snacks at the **top** and **bottom** of the lunchbox
+>
+> Stuff in the middle gets glossed over.
+
+---
+
 ## Sampling parameters
 
 - **Temperature** (0–2): higher = more random / creative, lower = more deterministic
   - For code, lean low (0–0.3)
 - **Top-p / top-k**: alternate ways to clip the sampling distribution
   - You rarely need to touch these
+
+---
+
+## Temperature — Like I'm five
+
+> A kid choosing crayons.
+>
+> **Low temperature** — they reach for the same red, every time.
+> Predictable. Repeatable.
+>
+> **High temperature** — they bounce around grabbing weird shades.
+> Sometimes brilliant, sometimes mud.
+>
+> For code → predictable kid.
+> For poetry → bouncy kid.
 
 ---
 
