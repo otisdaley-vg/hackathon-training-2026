@@ -1,0 +1,17 @@
+{
+  "name": "Foundation Example",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "cacheFrom": "ghcr.io/otisdaley-vg/hackathon-foundation:latest"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install"
+}
