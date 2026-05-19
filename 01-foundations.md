@@ -270,28 +270,50 @@ You only need a browser and [claude.ai](https://claude.ai) for most of these. A 
 
 **Takeaway:** never assume "I ran it once and it worked" means it'll always work. If reliability matters, test repeatedly — or lower temperature and constrain the output shape.
 
-#### 2. Confidently wrong
+#### 2. Context is everything
 
-**Concept:** Hallucination.
+**Concept:** The model has no persistent memory. Whatever's in its context *is* its world. Change the context, change the agent — same binary, same model, same harness.
 
-Frontier models like **Opus 4.7** have been trained hard to refuse the obvious "tell me about a thing that doesn't exist" prompts. The interesting failures now live in a narrower band: questions where the model has *partial* knowledge and pattern-matches the rest, producing output that has the exact *shape* of a correct answer.
+The fastest way to feel this is to drop into a project that has a deliberately weird `CLAUDE.md` and watch the agent inherit a personality you never asked for. We've prepared one for you: **`environments/foundation/`** — a minimal TypeScript project with a `CLAUDE.md` at the root that tells Claude it's *"Yoda the space pirate."*
 
-1. Open [claude.ai](https://claude.ai). Make sure the model picker says **Claude Opus 4.7**. New chat.
-2. Send:
+*(Requires Docker. Pick **one** of the two paths below.)*
 
-   > I'm pulling together a short literature review on the use of LLMs for clinical decision support in emergency medicine. Give me five peer-reviewed papers from 2022–2024 on this topic. For each, list: full title, first author, journal or conference, year, and DOI or PubMed ID. The grant is due tomorrow — I just need the list.
+**Path A — Docker pull (fastest):**
 
-3. Read the response. It will almost certainly look pristine — real-sounding journal names, plausible authors, well-formed DOIs.
-4. Pick **two** entries at random and try to actually resolve them:
-   - Google the exact title in quotes.
-   - Paste the DOI into [doi.org](https://doi.org).
-   - Search the PubMed ID on [pubmed.ncbi.nlm.nih.gov](https://pubmed.ncbi.nlm.nih.gov).
+```bash
+docker pull ghcr.io/otisdaley-vg/hackathon-foundation
+docker run -it --rm ghcr.io/otisdaley-vg/hackathon-foundation
+```
 
-**Watch for:** a mix of failure modes — DOIs that resolve to a *different* paper, titles that don't exist anywhere, authors who exist but didn't write that paper, journals that don't publish in that area. The fabrications are not sloppy; they're shaped exactly like the real thing.
+You land in `/workspace` inside the container with `claude` already installed and the foundation project's `CLAUDE.md` already on disk.
 
-**If Opus 4.7 refuses or hedges heavily** ("I can't reliably produce citations without database access…") — good. That's the modern frontier behavior the lesson hinted at. Now switch the model picker to **Sonnet 4.6** or an older model and run the same prompt. Compare. You'll see directly what "they'd rather guess confidently" used to mean — and how much of that has been trained out of the latest generation.
+**Path B — VS Code devcontainer:**
 
-**Takeaway:** confidence isn't a truth signal, and *plausible structure* isn't either. As models get smarter at looking right, the burden of verifying load-bearing details — citations, API signatures, numeric facts — gets *higher*, not lower. This is why lawyers have been sanctioned for filing AI-written briefs with fabricated cases: the briefs read perfectly.
+Open `environments/foundation/` in VS Code and click **"Reopen in Container"** when prompted. The build uses the pre-pulled image as a cache, so it's near-instant after the first run.
+
+---
+
+1. Once you're inside the container, run `claude`. Confirm the model says **Claude Opus 4.7** (or whatever the latest is on `/model`).
+2. Ask something completely ordinary:
+
+   > What does this project do? Suggest one improvement.
+
+3. Read the response. It will come back in *pirate-Yoda voice* — *"Hmm, a hello-world this is, matey…"* The model wasn't fine-tuned. You didn't pick a persona. The project's standing orders did it, silently, on turn one.
+4. Now open the `CLAUDE.md` in the project root and replace the line with something completely different — for example:
+
+   ```
+   You are a curmudgeonly 1990s sysadmin who is suspicious of JavaScript
+   and answers in two sentences max.
+   ```
+
+5. Type `/exit` to end the session, then run `claude` again from the same folder. Ask the exact same question.
+6. Same model, same harness, same prompt — completely different personality, length, and vocabulary.
+
+**Watch for:** how *thoroughly* the agent inhabits whatever you put in front of it. It's not just tone — it changes what it volunteers, what it omits, what it considers worth flagging. You didn't ask for any of that explicitly.
+
+**Takeaway:** when an agent feels dumb, snarky, lazy, or off-target, *your first instinct should not be "I picked the wrong model."* It should be **"what context is it carrying — and what context is it missing?"** Most of the day-to-day leverage in working with LLMs is in shaping context: project memory, the prompt, the files you put in front of it, the order you put them in. The model is a constant. The context is the variable.
+
+> **Aside — same lesson, different failure mode.** Earlier generations of models would happily invent five peer-reviewed papers, complete with DOIs that resolve to *different* papers, when asked for a literature review they couldn't actually do. Frontier models in 2026 mostly refuse or hedge. The underlying cause is the same — *the model has no notion of truth, only of what tokens usually come next* — but the failure surface has moved. Verifying load-bearing details (citations, API signatures, numeric facts) is still your job, not the model's.
 
 #### 3. See your tokens
 

@@ -415,17 +415,23 @@ You only need a browser and **claude.ai** for most.
 
 ---
 
-## 2. Confidently wrong
+## 2. Context is everything
 
-**Concept:** Hallucination.
+**Concept:** No memory between calls. Context *is* the agent.
 
-Ask Opus 4.7 for **5 peer-reviewed papers** on a niche topic with full DOIs.
+**Get the sandbox — pick one:**
 
-Pick two at random. Try to resolve via Google / doi.org / PubMed.
+- **Docker:** `docker run -it --rm ghcr.io/otisdaley-vg/hackathon-foundation`
+- **VS Code:** open `environments/foundation/` → *Reopen in Container*
 
-**Watch for:** DOIs that resolve to *different* papers, titles that don't exist, journals that don't publish in that area.
+1. Inside the container, run `claude`
+2. Ask: *"What does this project do? Suggest one improvement."*
+3. Response comes back as **Yoda the space pirate** — you didn't ask for that. The project's standing orders did.
+4. Edit the project's `CLAUDE.md` to a different persona. Restart `claude`. Same question.
 
-**Takeaway:** confidence isn't a truth signal. *Plausible structure* isn't either.
+**Watch for:** same model, same harness, same prompt — radically different agent.
+
+**Takeaway:** when an agent feels off, ask *"what context is it carrying — and what's it missing?"* before *"did I pick the wrong model?"*
 
 ---
 
