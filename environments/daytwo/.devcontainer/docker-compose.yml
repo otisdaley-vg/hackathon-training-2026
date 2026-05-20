@@ -4,12 +4,12 @@ services:
       context: ..
       dockerfile: Dockerfile
     volumes:
-      - ..:/workspaces/daytwo:cached
+      - ..:/workspace:cached
     command: sleep infinity
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://hackathon:hackathon@db:5432/hackathon
+      DATABASE_URL: postgres://hackathon:hackathon@db:5432/movies
 
   db:
     image: postgres:16
@@ -17,7 +17,7 @@ services:
     environment:
       POSTGRES_USER: hackathon
       POSTGRES_PASSWORD: hackathon
-      POSTGRES_DB: hackathon
+      POSTGRES_DB: movies
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ../db/init:/docker-entrypoint-initdb.d:ro

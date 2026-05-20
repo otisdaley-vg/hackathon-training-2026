@@ -18,9 +18,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 WORKDIR /workspace
-COPY --chown=$USER_UID:$USER_GID CliTool.csproj ./
 USER $USERNAME
-RUN dotnet restore
 
 COPY --chown=$USER_UID:$USER_GID . .
 
