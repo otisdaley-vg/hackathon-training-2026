@@ -201,6 +201,21 @@ Format: `<type>(<scope>): <subject>` — type ∈ {feat, fix, chore, refactor, d
 - `<project>/.claude/skills/<name>/` — scoped to one repo. Commit it and teammates get it too.
 - Bundled with **plugins** — Claude Code ships some skills out of the box (e.g. `init`, `review`), and installing a plugin can add more.
 
+**Where to find prebuilt skills:**
+
+- [`anthropics/skills`](https://github.com/anthropics/skills) — Anthropic's official open-source skill library (document creation, PDF handling, slides, spreadsheets, etc.). Drop any folder straight into `~/.claude/skills/`.
+- [**skills.sh**](https://skills.sh) — community directory / leaderboard of skills across 20+ agent platforms. Install with `npx skillsadd <owner/repo>`. Good for browsing what's popular before you write your own.
+- **Plugin marketplaces** — `/plugin marketplace add <repo>` then `/plugin install <name>`. Plugins often bundle multiple skills + sub-agents + commands together.
+- **Built-in Claude Code skills** — already loaded; type `/` in a session to see what's available (e.g. `init`, `review`, `security-review`, `tdd`, `diagnose`).
+- **Community repos** — search GitHub for `claude skills` or `SKILL.md`. Read the source before installing; a skill is just instructions the model will follow.
+
+**My picks — skills worth a look:**
+
+- [**`anthropics/skills`**](https://github.com/anthropics/skills) — the official set. Start here. The PDF, docx, xlsx, and pptx skills alone justify the install.
+- [**`anthropics/skills` → `frontend-design`**](https://github.com/anthropics/skills/tree/main/frontend-design) — aesthetic "anchors" that lock palette, typography, and texture to specific CSS tokens. Stops the agent from defaulting to generic Tailwind soup when you ask for a UI.
+- [**`mattpocock/skills`**](https://github.com/mattpocock/skills) — Matt Pocock's personal pack. Includes `tdd`, `diagnose`, `grill-me`, `prototype`, `to-prd`, `to-issues`, `write-a-skill`, `improve-codebase-architecture`, and more. Many of these are the engineering-discipline patterns we cover in Lesson 2.
+- [**`obra/superpowers`**](https://github.com/obra/superpowers) — Jesse Vincent's agentic skills framework + software-development methodology. Big, opinionated, and battle-tested; treat it as a worked example of how far you can push the skills system.
+
 > **Like I'm five:** Imagine a cook with a drawer full of recipe cards. They don't keep every recipe in their head — that's too much to remember at once. When someone orders pancakes, the cook pulls out the pancake card and follows it. When someone orders soup, they put the pancake card back and grab the soup card. The cards are skills: small, labeled, and only opened when the order matches.
 
 ### Project memory (AGENTS.md / CLAUDE.md)

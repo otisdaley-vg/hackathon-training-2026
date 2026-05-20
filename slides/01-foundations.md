@@ -325,6 +325,25 @@ refactor, docs}.
 
 ---
 
+## Where to find prebuilt skills
+
+- **[`anthropics/skills`](https://github.com/anthropics/skills)** — Anthropic's official library (docs, PDF, slides, spreadsheets…). Drop a folder into `~/.claude/skills/`.
+- **[skills.sh](https://skills.sh)** — community directory across 20+ agent platforms. Install with `npx skillsadd <owner/repo>`. Browse what's popular.
+- **Plugin marketplaces** — `/plugin marketplace add <repo>` → `/plugin install <name>`. Plugins bundle skills + sub-agents + commands.
+- **Built-in Claude Code skills** — already loaded; type `/` to see them (`init`, `review`, `security-review`, `tdd`, `diagnose`…).
+- **Community repos** — search GitHub for `claude skills` or `SKILL.md`. **Read the source before installing** — a skill is just instructions the model will follow.
+
+---
+
+## My picks — skills worth a look
+
+- **[`anthropics/skills`](https://github.com/anthropics/skills)** — the official set. Start here. PDF, docx, xlsx, pptx alone justify the install.
+- **[`anthropics/skills` → `frontend-design`](https://github.com/anthropics/skills/tree/main/frontend-design)** — aesthetic anchors locking palette, typography, texture to specific CSS tokens. Stops the agent defaulting to generic Tailwind soup.
+- **[`mattpocock/skills`](https://github.com/mattpocock/skills)** — Matt Pocock's personal pack: `tdd`, `diagnose`, `grill-me`, `prototype`, `to-prd`, `to-issues`, `write-a-skill`, `improve-codebase-architecture`. The engineering-discipline patterns we cover in Lesson 2.
+- **[`obra/superpowers`](https://github.com/obra/superpowers)** — Jesse Vincent's agentic skills framework + dev methodology. Big, opinionated, battle-tested — a worked example of how far the skills system goes.
+
+---
+
 ## Skill — Like I'm five
 
 > A cook with a drawer full of recipe cards.
