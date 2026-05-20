@@ -22,6 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: docker/setup-qemu-action@v3
+
       - uses: docker/setup-buildx-action@v3
 
       - name: Log in to GHCR
@@ -36,8 +38,9 @@ jobs:
         with:
           context: environments/${{ matrix.environment }}
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.environment }}:latest
             ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.environment }}:${{ github.sha }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.environment }}:latest
-          cache-to: type=inline
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.environment }}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/hackathon-${{ matrix.environment }}:buildcache,mode=max
