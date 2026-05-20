@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [python, typescript, php, csharp, foundation]
+        environment: [typescript, csharp, daytwo, foundation]
     steps:
       - uses: actions/checkout@v4
 
