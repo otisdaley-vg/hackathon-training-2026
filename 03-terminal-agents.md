@@ -188,14 +188,12 @@ We're going to run Claude Code inside a container for the whole exercise. The co
 
 ### Step 0 — Build the containerized agent
 
-Each language stack has its own pre-built environment in [`environments/`](./environments/). Each one is a Debian image (based on `node:20`) with Claude Code installed, a non-root `node` user with passwordless sudo, and the language toolchain. Pick the stack you'll use in Exercise 1 and build its image:
+Each language stack has its own pre-built environment in [`environments/`](./environments/). Each has Claude Code installed and the language toolchain baked in. Pick the stack you'll use in Exercise 1 and build its image:
 
 ```bash
 # from the workshop repo root
-docker build -t agent-node   environments/node     # or:
-docker build -t agent-python environments/python   # or:
-docker build -t agent-php    environments/php      # or:
-docker build -t agent-go     environments/go
+docker build -t agent-typescript environments/typescript   # or:
+docker build -t agent-csharp     environments/csharp
 ```
 
 Create the scratch folder on your host that the agent will be allowed to read and write:
@@ -212,13 +210,13 @@ Now pick one of two ways to start a shell inside the container with that folder 
 docker run -it --rm \
   -v "$HOME/sandbox-agent:/workspace" \
   -w /workspace \
-  agent-node bash       # match the image you built
+  agent-typescript bash       # match the image you built
 ```
 
-**Option B — VS Code dev container.** If you'd rather have your editor attached to the container (filetree, integrated terminal, extensions installed inside the container instead of on your host), each `environments/<stack>/` folder ships a ready-to-use [`.devcontainer/devcontainer.json`](./environments/node/.devcontainer/devcontainer.json) that builds from the local `Dockerfile` and bind-mounts `~/sandbox-agent` as `/workspace`. To use it:
+**Option B — VS Code dev container.** If you'd rather have your editor attached to the container (filetree, integrated terminal, extensions installed inside the container instead of on your host), each `environments/<stack>/` folder ships a ready-to-use [`.devcontainer/devcontainer.json`](./environments/typescript/.devcontainer/devcontainer.json) that builds from the local `Dockerfile` and bind-mounts `~/sandbox-agent` as `/workspace`. To use it:
 
 1. Install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
-2. Open the stack folder you want in VS Code (e.g. `code environments/node`).
+2. Open the stack folder you want in VS Code (e.g. `code environments/typescript`).
 3. Run **Dev Containers: Reopen in Container** from the command palette (`Cmd/Ctrl+Shift+P`).
 
 VS Code builds the image (you don't need the `docker build` step above for this path — it's only needed for Option A), then drops you into a terminal at `/workspace`, which is your `~/sandbox-agent` folder on the host. The VS Code filetree shows the same `/workspace` — your edits land in your sandbox, not in the workshop repo.
@@ -231,12 +229,10 @@ Inside the container, pick a language and ask Claude to scaffold a minimal HTTP 
 
 | Stack | Prompt |
 | --- | --- |
-| **Node** | *"Scaffold a minimal Express app in this folder. Single route `GET /` returning `{ok: true}`. Add `package.json`, one supertest test in `test/` hitting `/`, and a `README` explaining how to run and test it."* |
-| **Python** | *"Scaffold a minimal FastAPI app in this folder using `uv` for deps. Single route `GET /` returning `{ok: true}`. Add `pyproject.toml`, one pytest in `tests/` hitting `/` via httpx, and a `README` explaining how to run and test it."* |
-| **PHP** | *"Scaffold a minimal Slim 4 app in this folder. Single route `GET /` returning `{ok: true}`. Add `composer.json`, one PHPUnit test for `/`, and a `README` explaining how to run and test it."* |
-| **Go** | *"Scaffold a minimal Go HTTP server in this folder using only `net/http` from the standard library. Single route `GET /` returning `{\"ok\": true}`. Add `go.mod`, one `_test.go` for `/` using `httptest`, and a `README` explaining how to run and test it."* |
+| **TypeScript** | *"Scaffold a minimal Express app in this folder using TypeScript. Single route `GET /` returning `{ok: true}`. Add `package.json`, one supertest test in `test/` hitting `/`, and a `README` explaining how to run and test it."* |
+| **C#** | *"Scaffold a minimal ASP.NET Core minimal API in this folder. Single endpoint `GET /` returning `{\"ok\": true}`. Add a `.csproj`, one xunit test for `/` using `WebApplicationFactory`, and a `README` explaining how to run and test it."* |
 
-Watch the tool calls. Any toolchain the agent needs (`php`, `go`, `uv`, language-specific package managers) it will install **inside the container** — the host is never touched. If a download is blocked by the firewall allowlist, you'll see it surface as a failed Bash call rather than a silent hang; that's the hard containment doing its job.
+Watch the tool calls. Any toolchain the agent needs (npm packages, dotnet tools) it will install **inside the container** — the host is never touched. If a download is blocked by the firewall allowlist, you'll see it surface as a failed Bash call rather than a silent hang; that's the hard containment doing its job.
 
 When it's done, run the tests it wrote. Read the diff before approving the run.
 

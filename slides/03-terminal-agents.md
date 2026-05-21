@@ -22,6 +22,22 @@ style: |
 
 ---
 
+## What we learnt yesterday
+
+**Lesson 1 — Foundations**
+- **LLMs predict tokens** — everything else (reasoning, tool use, memory) is scaffolding on top
+- **Harness** = how you talk to the model · **Agent** = LLM + tools + loop · **Skill** = on-demand instructions · **CLAUDE.md** = always-loaded standing orders
+- Good prompts have **role, context, task, constraints**. Context is finite — noisy contexts hurt.
+
+**Lesson 2 — AI Workflows**
+- **Constrain first, generate second, verify third** — the spine of every workflow
+- **SDD** — the spec is the contract. **TDD** — the test is a verifier the model can't bluff past.
+- Match the workflow to the shape of the work: plan-then-execute, diagnose, prototype, critique, vertical-slice, evals
+
+> Yesterday was about **framing and verification**. Today is about **letting the agent loose** — safely.
+
+---
+
 ## Questions?
 
 **Interject anytime** — please ask if anything's unclear.
@@ -348,14 +364,12 @@ This is the setup you want any time you're letting the agent move fast on unfami
 ## Step 0 — Build the containerized agent
 
 Each language stack has a pre-built environment in [`environments/`](./environments/).
-Debian image (`node:20`) + Claude Code + non-root `node` user + toolchain.
+Claude Code and the language toolchain are baked in.
 
 ```bash
 # from the workshop repo root
-docker build -t agent-node   environments/node
-docker build -t agent-python environments/python
-docker build -t agent-php    environments/php
-docker build -t agent-go     environments/go
+docker build -t agent-typescript environments/typescript
+docker build -t agent-csharp     environments/csharp
 ```
 
 Create the scratch folder on your host:
@@ -374,7 +388,7 @@ One command, no editor integration:
 docker run -it --rm \
   -v "$HOME/sandbox-agent:/workspace" \
   -w /workspace \
-  agent-node bash       # match the image you built
+  agent-typescript bash       # match the image you built
 ```
 
 ---
@@ -386,7 +400,7 @@ Editor attached to the container — filetree, integrated terminal, extensions i
 Each `environments/<stack>/` ships a ready-to-use `.devcontainer/devcontainer.json`.
 
 1. Install the **Dev Containers** extension
-2. Open the stack folder (`code environments/node`)
+2. Open the stack folder (`code environments/typescript`)
 3. Run **Dev Containers: Reopen in Container** (`Cmd/Ctrl+Shift+P`)
 
 VS Code builds the image and drops you in `/workspace` (= `~/sandbox-agent` on host).
@@ -416,10 +430,8 @@ Be specific about the **done condition** — describe an outcome the agent can v
 
 | Stack | Prompt summary |
 |---|---|
-| **Node** | Minimal Express app, `GET /` → `{ok: true}`, supertest test, README |
-| **Python** | Minimal FastAPI app using `uv`, `GET /` → `{ok: true}`, pytest + httpx, README |
-| **PHP** | Minimal Slim 4 app, `GET /` → `{ok: true}`, PHPUnit test, README |
-| **Go** | Minimal `net/http` server, `GET /` → `{"ok": true}`, `_test.go` with `httptest`, README |
+| **TypeScript** | Minimal Express app (TS), `GET /` → `{ok: true}`, supertest test, README |
+| **C#** | Minimal ASP.NET Core minimal API, `GET /` → `{"ok": true}`, xunit test with `WebApplicationFactory`, README |
 
 ---
 
@@ -427,7 +439,7 @@ Be specific about the **done condition** — describe an outcome the agent can v
 
 Watch the tool calls.
 
-Toolchains the agent needs (`php`, `go`, `uv`) it installs **inside the container** — the host is never touched.
+Toolchains the agent needs (npm packages, dotnet tools) it installs **inside the container** — the host is never touched.
 
 If a download is blocked by the firewall allowlist → surfaces as a failed Bash call.
 That's the hard containment doing its job.
